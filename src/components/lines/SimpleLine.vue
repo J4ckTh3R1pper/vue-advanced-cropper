@@ -2,11 +2,12 @@
 import bem from 'easy-bem';
 import classnames from 'classnames';
 import { LineWrapper } from '../service';
+import {defineComponent} from 'vue';
 
 const block = bem('vue-simple-line');
 const wrapper = bem('vue-simple-line-wrapper');
 
-export default {
+export default defineComponent({
 	name: 'SimpleLine',
 	components: {
 		LineWrapper,
@@ -56,7 +57,7 @@ export default {
 			this.$emit('drag-end');
 		},
 	},
-};
+});
 </script>
 
 <template>

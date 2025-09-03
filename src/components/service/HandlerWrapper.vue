@@ -3,10 +3,11 @@ import bem from 'easy-bem';
 import classnames from 'classnames';
 import { directionNames } from '../../core/utils';
 import DraggableElement from './DraggableElement.vue';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-handler-wrapper');
 
-export default {
+export default defineComponent({
 	name: 'HandlerWrapper',
 	components: {
 		DraggableElement,
@@ -38,7 +39,7 @@ export default {
 			};
 		},
 	},
-};
+});
 </script>
 
 <template>

@@ -1,12 +1,12 @@
-const sass = require('sass');
+const sass = require('sass-embedded');
 const autoprefixer = require('autoprefixer');
 const postcss = require('postcss');
 const fs = require('fs');
 
 const themes = ['compact', 'classic', 'bubble'];
 
-themes.forEach((theme) => {
-	const result = sass.renderSync({ file: `./src/themes/${theme}.scss` });
+themes.forEach( async (theme) => {
+	const result = await sass.compileAsync(`./src/themes/${theme}.scss`);
 	const css = result.css;
 
 	postcss([autoprefixer])
@@ -20,3 +20,4 @@ themes.forEach((theme) => {
 
 	fs.copyFileSync(`./src/themes/${theme}.scss`, `./dist/theme.${theme}.scss`);
 });
+fs.copyFileSync(`./src/types.d.ts`, `./dist/types.d.ts`);

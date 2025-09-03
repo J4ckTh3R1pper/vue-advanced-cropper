@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
 import classnames from 'classnames';
 import bem from 'easy-bem';
 import debounce from 'debounce';
-import { RectangleStencil } from './components/stencils';
-import { BackgroundWrapper } from './components/service';
+import { RectangleStencil } from './stencils';
+import { BackgroundWrapper } from './service';
 import {
+	Coordinates,
 	fillBoundaries,
 	fitBoundaries,
 	getOptions,
+	ImageTransforms,
 	isBlob,
 	isFunction,
 	isLoadedImage,
@@ -16,12 +18,12 @@ import {
 	isObject,
 	limitBy,
 	radians,
-} from './core';
-import { approximatedSize } from './core/algorithms';
-import { updateCanvas } from './core/canvas';
-import { ManipulateImageEvent } from './core/events';
-import { isEqual, limitSizeRestrictions, limitsToSize, ratio } from './core/service';
-import { isLocal, isCrossOriginURL, isUndefined, parseNumber } from './core/utils';
+	VisibleArea,
+} from '@/core';
+import { updateCanvas } from '@/core/canvas';
+import { ManipulateImageEvent } from '@/core/events';
+import { isEqual, limitSizeRestrictions, limitsToSize, ratio } from '@/core/service';
+import { isLocal, isCrossOriginURL, isUndefined, parseNumber } from '@/core/utils';
 import {
 	arrayBufferToDataURL,
 	getImageTransforms,
@@ -29,13 +31,26 @@ import {
 	prepareSource,
 	parseImage,
 	fillImageTransforms,
-} from './core/image';
-import { IMAGE_RESTRICTIONS, DEFAULT_COORDINATES } from './core/constants';
-import * as algorithms from './core/algorithms';
+} from '@/core/image';
+import { IMAGE_RESTRICTIONS, DEFAULT_COORDINATES } from '@/core/constants';
+import * as algorithms from '../core/algorithms'; // Using @ alias here will result in path not matching in generated dts
+import {defineComponent, StyleValue} from 'vue';
 
 const cn = bem('vue-advanced-cropper');
+export interface CropperResult {
+	coordinates: Coordinates;
+	visibleArea: VisibleArea;
+	canvas?: HTMLCanvasElement;
+	imageTransforms: ImageTransforms;
+	image: {
+		width: number;
+		height: number;
+		transforms: ImageTransforms;
+		src: string | null;
+	};
+}
 
-export default {
+export default defineComponent({
 	name: 'Cropper',
 	components: {
 		BackgroundWrapper,
@@ -118,7 +133,7 @@ export default {
 		imageRestriction: {
 			type: String,
 			default: 'fit-area',
-			validator(value) {
+			validator(value: string) {
 				return IMAGE_RESTRICTIONS.indexOf(value) !== -1;
 			},
 		},
@@ -131,11 +146,9 @@ export default {
 		},
 		defaultPosition: {
 			type: [Function, Object],
-			default: algorithms.defaultPosition,
 		},
 		defaultVisibleArea: {
 			type: [Function, Object],
-			default: algorithms.defaultVisibleArea,
 		},
 		defaultTransforms: {
 			type: [Function, Object],
@@ -212,7 +225,7 @@ export default {
 			imageAttributes: {
 				width: null,
 				height: null,
-				crossOrigin: false,
+				crossOrigin: null,
 				src: null,
 			},
 			defaultImageTransforms: {
@@ -248,7 +261,7 @@ export default {
 				transforms: this.imageTransforms,
 			};
 		},
-		imageTransforms() {
+		imageTransforms(): ImageTransforms {
 			return {
 				rotate: this.appliedImageTransforms.rotate,
 				flip: {
@@ -426,7 +439,7 @@ export default {
 			}
 		},
 		boundariesStyle() {
-			const styles = {
+			const styles: StyleValue = {
 				width: this.boundaries.width ? `${Math.round(this.boundaries.width)}px` : 'auto',
 				height: this.boundaries.height ? `${Math.round(this.boundaries.height)}px` : 'auto',
 				transition: `opacity ${this.transitionTime}ms`,
@@ -470,7 +483,7 @@ export default {
 				scaleY: this.imageTransforms.scaleY * (this.imageAttributes.height / optimalImageSize.height),
 			};
 
-			const result = {
+			const result: StyleValue = {
 				width: `${optimalImageSize.width}px`,
 				height: `${optimalImageSize.height}px`,
 				left: '0px',
@@ -535,7 +548,7 @@ export default {
 		window.addEventListener('resize', this.refresh);
 		window.addEventListener('orientationchange', this.refresh);
 	},
-	destroyed() {
+	unmounted() {
 		window.removeEventListener('resize', this.refresh);
 		window.removeEventListener('orientationchange', this.refresh);
 		if (this.imageAttributes.revoke && this.imageAttributes.src) {
@@ -546,15 +559,19 @@ export default {
 	},
 	methods: {
 		// External methods
-		getResult() {
+		getResult(): CropperResult {
 			const coordinates = this.initialized
 				? this.prepareResult({ ...this.coordinates })
 				: this.defaultCoordinates();
-			const imageTransforms = {
+			const imageTransforms: ImageTransforms = {
 				rotate: this.imageTransforms.rotate % 360,
 				flip: {
 					...this.imageTransforms.flip,
 				},
+				translateX: this.imageTransforms.translateX,
+				translateY: this.imageTransforms.translateY,
+				scaleX: this.imageTransforms.scaleX,
+				scaleY: this.imageTransforms.scaleY,
 			};
 			if (this.src && this.imageLoaded) {
 				const cropper = this;
@@ -763,7 +780,7 @@ export default {
 
 				const firstNumeric = (array) => array.find((el) => isNumeric(el));
 
-				let size = approximatedSize({
+				let size = algorithms.approximatedSize({
 					sizeRestrictions: {
 						minWidth: firstNumeric([options.width, options.minWidth]) || 0,
 						minHeight: firstNumeric([options.height, options.minHeight]) || 0,
@@ -859,11 +876,13 @@ export default {
 					);
 				}
 
+				const defaultPositionAlgorithm = this.defaultPosition || algorithms.defaultPosition;
+
 				const transforms = [
 					defaultSize,
 					({ coordinates }) => ({
-						...(isFunction(this.defaultPosition)
-							? this.defaultPosition({
+						...(isFunction(defaultPositionAlgorithm)
+							? defaultPositionAlgorithm({
 									coordinates,
 									imageSize: this.imageSize,
 									visibleArea: this.visibleArea,
@@ -948,8 +967,10 @@ export default {
 						this.resetCoordinates();
 					}
 
-					this.visibleArea = isFunction(this.defaultVisibleArea)
-						? this.defaultVisibleArea({
+					let algorithm = this.defaultVisibleArea || algorithms.defaultVisibleArea;
+
+					this.visibleArea = isFunction(algorithm)
+						? algorithm({
 								imageSize: this.imageSize,
 								boundaries: this.boundaries,
 								coordinates: this.priority !== 'visible-area' ? this.coordinates : null,
@@ -1005,12 +1026,10 @@ export default {
 				});
 		},
 		onChange(debounce = true) {
-			if (this.$listeners && this.$listeners.change) {
-				if (debounce && this.debounce) {
-					this.debouncedUpdate();
-				} else {
-					this.update();
-				}
+			if (debounce && this.debounce) {
+				this.debouncedUpdate();
+			} else {
+				this.update();
 			}
 		},
 		onChangeImage() {
@@ -1023,7 +1042,7 @@ export default {
 					if (crossOrigin === true) {
 						crossOrigin = 'anonymous';
 					}
-					this.imageAttributes.crossOrigin = crossOrigin;
+					this.imageAttributes.crossOrigin = crossOrigin || null;
 				}
 				if (this.checkOrientation) {
 					const promise = parseImage(this.src);
@@ -1330,7 +1349,8 @@ export default {
 			}
 		},
 	},
-};
+	emits: ['change', 'error', 'ready'],
+});
 </script>
 
 <template>

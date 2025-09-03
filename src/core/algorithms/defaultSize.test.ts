@@ -2,6 +2,7 @@ import { defaultSize } from './defaultSize';
 import { MockFactory } from '../testing/utils';
 import { refineSizeRestrictions } from './refineSizeRestrictions';
 import { positionRestrictions } from './positionRestrictions';
+import {dynamicAreaRestrictions} from './areaRestrictions';
 
 // Mockup warn messages
 console.warn = () => {};
@@ -26,6 +27,7 @@ test('Should return default size in ANY POSSIBLE situations', () => {
 			imageRestriction,
 			imageSize,
 			positionRestrictions: positionRestrictions({ imageRestriction, imageSize }),
+			areaRestrictions: dynamicAreaRestrictions({visibleArea, imageSize, imageRestriction, boundaries, type: 'move'})
 		});
 
 		const params = {

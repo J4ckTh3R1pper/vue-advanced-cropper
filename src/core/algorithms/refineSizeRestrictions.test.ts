@@ -1,6 +1,7 @@
 import { refineSizeRestrictions } from './refineSizeRestrictions';
 import { MockFactory } from '../testing/utils';
 import { positionRestrictions } from './positionRestrictions';
+import {dynamicAreaRestrictions} from './areaRestrictions';
 
 // Mockup warn messages
 console.warn = () => {};
@@ -25,6 +26,7 @@ test('Should sets correct restrictions in ANY situation', () => {
 			imageRestriction,
 			imageSize,
 			positionRestrictions: positionRestrictions({ imageRestriction, imageSize }),
+			areaRestrictions: dynamicAreaRestrictions({visibleArea, boundaries, imageSize, imageRestriction, type: 'move'})
 		});
 
 		expect(refinedSizeRestriction.minWidth).toBeLessThanOrEqual(refinedSizeRestriction.maxWidth);

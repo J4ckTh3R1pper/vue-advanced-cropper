@@ -5,6 +5,7 @@ import {
 	PositionRestrictions,
 	Size,
 	SizeRestrictions,
+	StencilSize,
 	VisibleArea,
 } from '../typings';
 import { fitSize, limitsToSize } from '../service';
@@ -17,6 +18,8 @@ interface RefineSizeRestrictionsParams {
 	boundaries: Boundaries;
 	imageSize: Size;
 	imageRestriction: ImageRestriction;
+	visibleArea?: VisibleArea;
+	stencilSize?: StencilSize;
 }
 export function refineSizeRestrictions({
 	areaRestrictions,

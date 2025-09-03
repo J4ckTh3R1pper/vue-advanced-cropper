@@ -6,13 +6,14 @@ import { directionNames } from '../../core/utils';
 import { ResizeEvent } from '../../core/events';
 import { SimpleHandler } from '../handlers';
 import { SimpleLine } from '../lines';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-bounding-box');
 
 const HORIZONTAL_DIRECTIONS = ['east', 'west', null];
 const VERTICAL_DIRECTIONS = ['south', 'north', null];
 
-export default {
+export default defineComponent({
 	name: 'BoundingBox',
 	props: {
 		width: {
@@ -268,7 +269,7 @@ export default {
 			}
 		},
 	},
-};
+});
 </script>
 
 <template>

@@ -3,10 +3,11 @@ import classnames from 'classnames';
 import bem from 'easy-bem';
 import { distance } from '../../core/utils';
 import { MoveEvent } from '../../core/events.ts';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-draggable-area');
 
-export default {
+export default defineComponent({
 	name: 'DraggableArea',
 	props: {
 		movable: {
@@ -140,7 +141,7 @@ export default {
 			this.touches = [];
 		},
 	},
-};
+});
 </script>
 
 <template>

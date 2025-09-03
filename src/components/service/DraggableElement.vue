@@ -1,7 +1,8 @@
 <script>
+import {defineComponent} from 'vue';
 import draggable from '../../mixins/draggable';
 
-export default {
+export default defineComponent({
 	name: 'DraggableElement',
 	mixins: [draggable],
 	props: {
@@ -9,7 +10,7 @@ export default {
 			type: String,
 		},
 	},
-};
+});
 </script>
 
 <template>

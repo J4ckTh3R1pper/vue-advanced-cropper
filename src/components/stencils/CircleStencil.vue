@@ -4,10 +4,11 @@ import bem from 'easy-bem';
 import { BoundingBox, DraggableArea, StencilPreview } from '../service';
 import { SimpleHandler } from '../handlers';
 import { SimpleLine } from '../lines';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-circle-stencil');
 
-export default {
+export default defineComponent({
 	components: {
 		StencilPreview,
 		BoundingBox,
@@ -154,7 +155,7 @@ export default {
 			};
 		},
 	},
-};
+});
 </script>
 
 <template>

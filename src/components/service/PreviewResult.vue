@@ -4,10 +4,11 @@ import classnames from 'classnames';
 import { radians } from '../../core';
 import { getStyleTransforms } from '../../core/image';
 import { rotateSize } from '../../core/service';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-preview-result');
 
-export default {
+export default defineComponent({
 	name: 'PreviewResult',
 	props: {
 		image: {
@@ -101,7 +102,7 @@ export default {
 			return result;
 		},
 	},
-};
+});
 </script>
 
 <template>

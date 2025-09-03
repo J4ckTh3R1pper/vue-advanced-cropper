@@ -13,14 +13,19 @@
 	"esModuleInterop": true,
 	"forceConsistentCasingInFileNames": true,
 	"isolatedModules": true,
-	"jsx": "react",
+	"jsx": "preserve",
 	"module": "esnext",
 	"moduleResolution": "node",
 	"noEmit": true,
 	"resolveJsonModule": true,
-	"skipLibCheck": true
+	"skipLibCheck": true,
+	"baseUrl": ".",
+	"paths": {
+		"@/*": ["./src/*"]
+	},
+	"types": ["node", "vite/client"]
   },
   "include": [
-    "src"
+    "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/types.d.ts"
   ]
 }

@@ -1,10 +1,11 @@
 <script>
 import bem from 'easy-bem';
 import DraggableElement from './DraggableElement.vue';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-line-wrapper');
 
-export default {
+export default defineComponent({
 	name: 'LineWrapper',
 	components: {
 		DraggableElement,
@@ -24,7 +25,7 @@ export default {
 			return cn({ [this.position]: true, disabled: this.disabled });
 		},
 	},
-};
+});
 </script>
 
 <template>

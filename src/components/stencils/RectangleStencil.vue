@@ -4,10 +4,11 @@ import bem from 'easy-bem';
 import { BoundingBox, DraggableArea, StencilPreview } from '../service';
 import { SimpleHandler } from '../handlers';
 import { SimpleLine } from '../lines';
+import {defineComponent} from 'vue';
 
 const cn = bem('vue-rectangle-stencil');
 
-export default {
+export default defineComponent({
 	name: 'RectangleStencil',
 	components: {
 		StencilPreview,
@@ -156,7 +157,7 @@ export default {
 			};
 		},
 	},
-};
+});
 </script>
 
 <template>

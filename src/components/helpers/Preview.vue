@@ -4,8 +4,9 @@ import bem from 'easy-bem';
 import { radians } from '../../core';
 import { getStyleTransforms } from '../../core/image';
 import { rotateSize } from '../../core/service';
+import {defineComponent} from 'vue';
 const cn = bem('vue-preview');
-export default {
+export default defineComponent({
 	props: {
 		coordinates: {
 			type: Object,
@@ -188,7 +189,7 @@ export default {
 			this.refresh();
 		},
 	},
-};
+});
 </script>
 
 <template>

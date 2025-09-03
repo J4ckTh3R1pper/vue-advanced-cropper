@@ -39,6 +39,8 @@ interface FlipImageParams {
 	getAreaRestrictions: GetAreaRestrictions;
 	imageSize: ImageSize;
 	previousFlip: Reflect;
+	positionRestrictions: PositionRestrictions;
+	sizeRestrictions: SizeRestrictions;
 	flip: Reflect;
 	rotate: number;
 }

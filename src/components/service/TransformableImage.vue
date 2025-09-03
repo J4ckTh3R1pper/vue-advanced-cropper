@@ -3,8 +3,9 @@ import debounce from 'debounce';
 import { ManipulateImageEvent } from '../../core/events.ts';
 import { calculateGeometricProperties } from '../../core/touch';
 import { sign } from '../../core/utils';
+import {defineComponent} from 'vue';
 
-export default {
+export default defineComponent({
 	props: {
 		touchMove: {
 			type: Boolean,
@@ -182,7 +183,7 @@ export default {
 			}
 		},
 	},
-};
+});
 </script>
 
 <template>

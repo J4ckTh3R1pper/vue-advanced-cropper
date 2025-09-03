@@ -2,11 +2,12 @@
 import classnames from 'classnames';
 import bem from 'easy-bem';
 import { HandlerWrapper } from '../service';
+import {defineComponent} from 'vue';
 
 const block = bem('vue-simple-handler');
 const wrapper = bem('vue-simple-handler-wrapper');
 
-export default {
+export default defineComponent({
 	name: 'SimpleHandler',
 	components: {
 		HandlerWrapper,
@@ -67,7 +68,7 @@ export default {
 			this.$emit('drag-end');
 		},
 	},
-};
+});
 </script>
 
 <template>

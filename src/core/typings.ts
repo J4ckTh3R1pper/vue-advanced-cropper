@@ -106,6 +106,10 @@ export interface ImageTransforms {
 		horizontal: boolean;
 		vertical: boolean;
 	};
+	translateX: number;
+	translateY: number;
+	scaleX: number;
+	scaleY: number;
 }
 
 export interface ResizeSettings {

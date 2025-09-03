@@ -1,7 +1,8 @@
 <script>
+import {defineComponent} from 'vue';
 import TransformableImage from './TransformableImage.vue';
 
-export default {
+export default defineComponent({
 	components: {
 		TransformableImage,
 	},
@@ -23,7 +24,7 @@ export default {
 			required: true,
 		},
 	},
-};
+});
 </script>
 
 <template>

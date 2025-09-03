@@ -18,6 +18,9 @@ import { approximatedSize } from './approximatedSize';
 export interface CalculateStencilSizeParams {
 	aspectRatio: AspectRatio;
 	stencilSize: StencilSize;
+	currentStencilSize: StencilSize;
+	coefficient: number;
+	coordinates: Coordinates;
 	boundaries: Boundaries;
 }
 export function calculateStencilSize(params: CalculateStencilSizeParams): Size {
