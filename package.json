@@ -83,7 +83,7 @@
 		"easy-bem": "^1.0.2"
 	},
 	"files": [
-		"./dist"
+		"dist"
 	],
 	"lint-staged": {
 		"*.{js,vue,ts}": [
