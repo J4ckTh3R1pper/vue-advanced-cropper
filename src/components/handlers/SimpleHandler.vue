@@ -54,6 +54,7 @@ export default defineComponent({
 			};
 		},
 	},
+	emits: ['drag', 'drag-end'],
 	methods: {
 		onDrag(dragEvent) {
 			this.$emit('drag', dragEvent);

@@ -162,7 +162,7 @@ export default defineComponent({
 		window.addEventListener('resize', this.refresh);
 		window.addEventListener('orientationchange', this.refresh);
 	},
-	destroyed() {
+	unmounted() {
 		window.removeEventListener('resize', this.refresh);
 		window.removeEventListener('orientationchange', this.refresh);
 	},

@@ -39,6 +39,7 @@ export default defineComponent({
 			};
 		},
 	},
+	emits: ['leave', 'enter', 'drag', 'drag-end'],
 });
 </script>
 

@@ -25,6 +25,7 @@ export default defineComponent({
 			return cn({ [this.position]: true, disabled: this.disabled });
 		},
 	},
+	emits: ['leave', 'enter', 'drag', 'drag-end'],
 });
 </script>
 

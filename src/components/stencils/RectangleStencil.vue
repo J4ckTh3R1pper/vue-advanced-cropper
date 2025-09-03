@@ -133,6 +133,7 @@ export default defineComponent({
 			return style;
 		},
 	},
+	emits: ['resize', 'resize-end', 'move', 'move-end'],
 	methods: {
 		onMove(moveEvent) {
 			this.$emit('move', moveEvent);

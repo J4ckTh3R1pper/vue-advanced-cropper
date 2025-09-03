@@ -6,6 +6,7 @@ export default defineComponent({
 	components: {
 		TransformableImage,
 	},
+	emits: ['resize', 'move'],
 	props: {
 		touchMove: {
 			type: Boolean,
